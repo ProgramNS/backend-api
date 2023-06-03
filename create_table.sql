@@ -1,0 +1,2 @@
+CREATE TABLE `api_capstone`. (`id` INT(16) NOT NULL AUTO_INCREMENT , `article_id` VARCHAR(255) NOT NULL , `judul` VARCHAR(255) NOT NULL , `penjelasan` TEXT NOT NULL , `create_at` DATE NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+CREATE TABLE `api_capstone`. (`user_id` VARCHAR(255) NOT NULL , `name` VARCHAR(64) NOT NULL , `email` VARCHAR(64) NOT NULL , `password` VARCHAR(255) NOT NULL , `refresh_token` VARCHAR(255),PRIMARY KEY (`user_id`)) ENGINE = InnoDB;
