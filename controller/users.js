@@ -7,11 +7,11 @@ const bcrypt = require('bcrypt');
 const uid = uuid()
 const jwt = require('jsonwebtoken');
 
-const createUsers = routes.post('/register' , async (req , res)=>{
-    const {name , email} = req.body;
+const createUsers = routes.post('/register' ,  (req , res)=>{
+    const {name , email , password} = req.body;
+    console.log(name , email , password)
     const sql = "INSERT INTO user (user_id , name , email , password) VALUES(?,?,?,?)";
-    const hashPassword =  await bcrypt.hash(req.body.password, 10);
-    db.query(sql , [uid , name , email , hashPassword] ,(err)=>{
+    db.query(sql , [uid , name , email , password] ,(err)=>{
         res.setHeader('Content-Type','application/json');
         if(err) return res.status(403).json({
             error : true,
@@ -21,15 +21,13 @@ const createUsers = routes.post('/register' , async (req , res)=>{
             error : false,
             message : "Created account success"
         })
-        
     }) 
 });
 
-const loginUsers = routes.post('/login' , (req, res)=>{
+const loginUsers = routes.post('/login' , async (req, res)=>{
     const {email , password} = req.body;
     const sql = "SELECT * FROM user WHERE email =?";
-    const accessToken = jwt.sign({email : email}, process.env.ACCESS_TOKEN_SECRET);
-    db.query(sql , [email] , (err , fields)=>{
+    db.query(sql , [email , password] , (err , fields)=>{
         if(err) throw err;
         if (fields.length === 0 ) {
             res.status(404).json({
@@ -37,16 +35,21 @@ const loginUsers = routes.post('/login' , (req, res)=>{
                 message : "Email not found"
             });
         } else {
-            res.status(200).json({
+            if (password === fields[0].password){
+                res.status(200).json({
                 error : false,
                 message : "success",
                 loginResult : {
                     user_id  : fields[0].user_id,
                     name : fields[0].name,
                     email : fields[0].email,
-                    token : accessToken
                 }
             });
+            } else {
+                res.status(404).json({
+                    message : "Wrong Password"
+                })
+            }
         }
     });
 });
