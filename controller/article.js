@@ -44,7 +44,6 @@ const postRouteArticles = routes.post('/article' , (req , res)=>{
     const articleId = uuidv4();
     db.query(sql , [articleId, judul , penjelasan , link] , (err)=>{
         if (err) {
-            
             res.status(400).json({
                 erorr : true,
                 message : 'Gagal menambahkan article'
