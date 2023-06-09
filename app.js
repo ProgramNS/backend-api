@@ -8,9 +8,9 @@ app.use(express.json());
 app.use(bodyParser.json());
 // endpoint routes
 app.get('/' ,(req , res)=>{
-    res.status(200).json({
-        message : "Get Access To Using API"
-    });
+    res.status(302)
+    .setHeader("Location","https://documenter.getpostman.com/view/26386351/2s93sc3Bj8")
+    .end();
 });
 
 
